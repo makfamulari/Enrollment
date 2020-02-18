@@ -21,19 +21,22 @@ library(reprex)
 enrollment_stats <- read_excel("class_enrollment_summary_by_term2.18.20.xlsx", 
                                skip = 3) %>% 
   clean_names() %>% 
-  filter(! is.na(course_name)) %>% 
-  group_by(course_department) %>% 
-  arrange(desc(total))
-  
-enrollment_stats
-```
+  filter(! is.na(course_name)) 
 
+top_enrollment <- enrollment_stats %>% 
+  group_by(course_department) %>% 
+  select(course_department, total) %>% 
+  summarize(dept_total = sum(total)) %>% 
+  arrange(desc(dept_total)) %>% 
+  slice(1:5)
+  
+top_enrollment
+```
 ```{r echo = FALSE, message = FALSE}
-answer <- enrollment_stats %>% 
-  filter(course_department == "Government") %>% 
-  arrange(desc(total)) %>% 
-  slice(1:5) %>% 
-  select(2,3,6,14)
+new_course <- enrollment_stats %>% 
+  filter(course_department == "Economics") %>% 
+  
+```
 
 answer
 ```
