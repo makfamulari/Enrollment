@@ -1,0 +1,39 @@
+---
+title: "Enrollment"
+author: "Mak Famulari"
+date: "February 18, 2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r echo = FALSE, message = FALSE}
+library(tidycensus)
+library(tidyverse)
+library(janitor)
+library(readxl)
+library(reprex)
+```
+
+```{r echo = FALSE, message = FALSE}
+enrollment_stats <- read_excel("class_enrollment_summary_by_term2.18.20.xlsx", 
+                               skip = 3) %>% 
+  clean_names() %>% 
+  filter(! is.na(course_name)) %>% 
+  group_by(course_department) %>% 
+  arrange(desc(total))
+  
+enrollment_stats
+```
+
+```{r echo = FALSE, message = FALSE}
+answer <- enrollment_stats %>% 
+  filter(course_department == "Government") %>% 
+  arrange(desc(total)) %>% 
+  slice(1:5) %>% 
+  select(2,3,6,14)
+
+answer
+```
